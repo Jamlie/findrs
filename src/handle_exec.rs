@@ -44,7 +44,8 @@ pub fn get_dirs(path: &str, all: &bool, name: &Option<String>) {
     fn print_path(path: &str, name: &Option<String>) {
         let slash = "/".blue();
         if let Some(name) = name {
-            if path.contains(name) {
+            let dir_name = path.split("/").last().unwrap_or(path);
+            if dir_name.contains(name) {
                 println!("{}{}", path.blue(), slash);
             }
         } else {
@@ -70,7 +71,8 @@ pub fn get_files(path: &str, all: &bool, name: &Option<String>) {
 
     fn print_path(path: &str, name: &Option<String>) {
         if let Some(name) = name {
-            if path.contains(name) {
+            let file_name = path.split("/").last().unwrap_or(path);
+            if file_name.contains(name) {
                 println!("{}", path.green());
             }
         } else {
