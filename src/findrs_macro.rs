@@ -1,3 +1,7 @@
+//! # findrs_macro
+//! This module contains the macros used to find files and directories based on patterns in the
+//! code.
+
 /// # find_dirs
 /// Find directories based on the pattern provided
 /// It takes one of the following implementations:

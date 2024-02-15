@@ -1,3 +1,6 @@
+//! This module contains the functions that are used to handle the execution of the program to find
+//! files and directories.
+
 use colored::Colorize;
 use std::fs;
 use std::path::Path;
