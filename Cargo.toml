@@ -1,6 +1,6 @@
 [package]
 name = "find-rs"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Omar"]
 edition = "2021"
 description = "find-rs is a simple implementation of the find command in Rust"
