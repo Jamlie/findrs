@@ -9,18 +9,23 @@ mod handle_exec;
 #[derive(Parser, Debug, Clone)]
 #[command(version, about, long_about = None)]
 struct Args {
+    /// Show hidden files
     #[arg(short, long)]
     all: bool,
 
+    /// Search recursively
     #[arg(short, long)]
     recursive: bool,
 
+    /// Ignore a specific file or directory
     #[arg(short, long)]
     ignore: Option<String>,
 
+    /// Type of file or directory (f or d)
     #[arg(short, long)]
     type_: Option<String>,
 
+    /// Search by name
     #[arg(short, long)]
     name: Option<String>,
 }
