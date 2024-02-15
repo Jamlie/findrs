@@ -33,29 +33,27 @@ pub fn visit_dirs(
 }
 
 pub fn get_dirs(path: &str, all: &bool, name: &Option<String>) {
-    let slash = "/".blue();
     let path = path.strip_prefix("./").unwrap();
+
+    fn print_path(path: &str, name: &Option<String>) {
+        let slash = "/".blue();
+        if let Some(name) = name {
+            if path.contains(name) {
+                println!("{}{}", path.blue(), slash);
+            }
+        } else {
+            println!("{}{}", path.blue(), slash);
+        }
+    }
 
     match path.starts_with(".") {
         true => {
             if *all {
-                if let Some(name) = name {
-                    if path.contains(name) {
-                        println!("{}{}", path.blue(), slash);
-                    }
-                } else {
-                    println!("{}{}", path.blue(), slash);
-                }
+                print_path(path, name);
             }
         }
         _ => {
-            if let Some(name) = name {
-                if path.contains(name) {
-                    println!("{}{}", path.blue(), slash);
-                }
-            } else {
-                println!("{}{}", path.blue(), slash);
-            }
+            print_path(path, name);
         }
     }
 }
@@ -63,26 +61,24 @@ pub fn get_dirs(path: &str, all: &bool, name: &Option<String>) {
 pub fn get_files(path: &str, all: &bool, name: &Option<String>) {
     let path = path.strip_prefix("./").unwrap();
 
+    fn print_path(path: &str, name: &Option<String>) {
+        if let Some(name) = name {
+            if path.contains(name) {
+                println!("{}", path.green());
+            }
+        } else {
+            println!("{}", path.green());
+        }
+    }
+
     match path.starts_with(".") {
         true => {
             if *all {
-                if let Some(name) = name {
-                    if path.contains(name) {
-                        println!("{}", path.green());
-                    }
-                } else {
-                    println!("{}", path.green());
-                }
+                print_path(path, name);
             }
         }
         _ => {
-            if let Some(name) = name {
-                if path.contains(name) {
-                    println!("{}", path.green());
-                }
-            } else {
-                println!("{}", path.green());
-            }
+            print_path(path, name);
         }
     }
 }
