@@ -1,3 +1,11 @@
+/// # find_dirs
+/// Find directories based on the pattern provided
+/// It takes one of the following implementations:
+/// ````
+/// find_dirs!(path, all, name)
+/// find_dirs!(path, all, type_, name)
+/// find_dirs!(path, all, ignore, type_, name)
+/// ````
 #[macro_export]
 macro_rules! find_dirs {
     ($path:expr, $all:expr, $name:expr) => {
@@ -24,6 +32,14 @@ macro_rules! find_dirs {
     };
 }
 
+/// # find_files
+/// Finds files based on the pattern provided
+/// It takes one of the following implementations:
+/// ````
+/// find_files!(path, all, name)
+/// find_files!(path, all, type_, name)
+/// find_files!(path, all, ignore, type_, name)
+/// ````
 #[macro_export]
 macro_rules! find_files {
     ($path:expr, $all:expr, $name:expr) => {
