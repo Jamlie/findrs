@@ -5,7 +5,7 @@ use colored::Colorize;
 use std::fs;
 use std::path::Path;
 
-use crate::{find_dirs, find_files};
+use crate::{find_dirs, find_files, Args};
 
 /// Checks if the type is a file (f)
 fn is_type_file(type_: &str) -> bool {
@@ -90,4 +90,34 @@ pub fn get_files(path: &str, all: &bool, name: &Option<String>) {
             print_path(path, name);
         }
     }
+}
+
+/// Processes the findrs command with the given arguments, not recursively
+pub fn process_find(
+    current_dir: &Path,
+    args: &Args,
+    ignore: &str,
+    name: &Option<String>,
+) -> Vec<String> {
+    let mut results = vec![];
+    for entry in current_dir.read_dir().expect("read_dir call failed") {
+        if let Ok(entry) = entry {
+            let path = entry.path();
+            if entry.file_name() == *ignore {
+                continue;
+            }
+
+            if let Some(type_) = &args.type_ {
+                find_dirs!(path, &args.all, type_.as_str(), name);
+                find_files!(path, &args.all, type_.as_str(), name);
+            } else {
+                find_dirs!(path, &args.all, &args.name);
+                find_files!(path, &args.all, name);
+            }
+
+            results.push(path.display().to_string());
+        }
+    }
+
+    results
 }
