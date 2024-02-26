@@ -34,12 +34,11 @@ pub struct Args {
 fn main() {
     let args = Rc::new(Args::parse());
     let current_dir = Path::new(".");
-    let ignore = args.ignore.clone().unwrap_or("".to_string());
 
     if args.recursive {
-        visit_dirs(current_dir, &args.all, &ignore, &args.type_, &args.name);
+        visit_dirs(current_dir, &args);
     } else {
         let args = Rc::clone(&args);
-        process_find(current_dir, &args, &ignore, &args.name);
+        process_find(current_dir, &args);
     }
 }

@@ -7,32 +7,21 @@ use std::path::Path;
 
 use crate::{find_dirs, find_files, Args};
 
-/// Checks if the type is a file (f)
-fn is_type_file(type_: &str) -> bool {
-    return type_ == "f";
-}
-
-// Visits the directories recursively to find all files and directories
-pub fn visit_dirs(
-    dir: &Path,
-    all: &bool,
-    ignore: &String,
-    type_: &Option<String>,
-    name: &Option<String>,
-) {
+/// Visits the directories recursively to find all files and directories
+pub fn visit_dirs(dir: &Path, args: &Args) {
     let entries = fs::read_dir(dir).unwrap_or_else(|_| panic!("read_dir call failed"));
     for entry in entries {
         let entry = entry.unwrap_or_else(|_| panic!("entry call failed"));
-        if entry.file_name() == **ignore {
+        if entry.file_name() == *args.ignore.clone().unwrap_or("".to_string()) {
             continue;
         }
 
         let path = entry.path();
 
-        find_dirs!(path, all, ignore, type_, name);
-        match type_ {
-            Some(type_) => find_files!(path, all, type_.as_str(), false, name),
-            None => find_files!(path, all, name),
+        find_dirs!(&path, &args);
+        match &args.type_ {
+            Some(type_) => find_files!(path, &args.all, type_.as_str(), &args.name),
+            None => find_files!(path, &args.all, &args.name),
         }
     }
 }
@@ -93,26 +82,21 @@ pub fn get_files(path: &str, all: &bool, name: &Option<String>) {
 }
 
 /// Processes the findrs command with the given arguments, not recursively
-pub fn process_find(
-    current_dir: &Path,
-    args: &Args,
-    ignore: &str,
-    name: &Option<String>,
-) -> Vec<String> {
+pub fn process_find(current_dir: &Path, args: &Args) -> Vec<String> {
     let mut results = vec![];
     for entry in current_dir.read_dir().expect("read_dir call failed") {
         if let Ok(entry) = entry {
             let path = entry.path();
-            if entry.file_name() == *ignore {
+            if entry.file_name() == *args.ignore.clone().unwrap_or("".to_string()) {
                 continue;
             }
 
             if let Some(type_) = &args.type_ {
-                find_dirs!(path, &args.all, type_.as_str(), name);
-                find_files!(path, &args.all, type_.as_str(), name);
+                find_dirs!(path, &args.all, type_.as_str(), &args.name);
+                find_files!(path, &args.all, type_.as_str(), &args.name);
             } else {
                 find_dirs!(path, &args.all, &args.name);
-                find_files!(path, &args.all, name);
+                find_files!(path, &args.all, &args.name);
             }
 
             results.push(path.display().to_string());

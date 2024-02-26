@@ -14,10 +14,8 @@ mod tests {
             type_: None,
             name: None,
         };
-        let ignore = "";
-        let name: &Option<String> = &None;
 
-        let dirs_and_files = process_find(path, &args, ignore, name);
+        let dirs_and_files = process_find(path, &args);
 
         let expected = vec![
             "./tmp/.hidden.txt",
